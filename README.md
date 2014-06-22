@@ -48,11 +48,10 @@ machine with additional processing of the step for special cases. There was no
 clarifications about whether a real C standard should be used and which version 
 of the standard should be taken into account. Thus, comments are just erased,
 leaving all the spaces and line carriages outside the comment intact. Some of 
-the comments, which contradict the C standard, like nested C comments,
+the comments, which not inclulded into the C standard, like nested C comments,
  /* /* */ */ are not supported and may create garbage in output.
+Comments with the shift to the next line with backslash are supported.
 
 To evaluate the performance, a 10Mb file has been used as a load test. 
 The processing time for 10Mb takes about 9 sec on a laptop with 
 Intel Core i5 3320M, Ivy Bridge processor.
-
-Total implementation time took about 10 hours.
