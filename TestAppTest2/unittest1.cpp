@@ -14,7 +14,7 @@ using namespace Microsoft::VisualStudio::CppUnitTestFramework;
 
 std::string readWholeFile(const std::string &strFileName)
 {
-    std::ifstream ifs(strFileName.c_str(), std::ios::in);
+    std::ifstream ifs(strFileName.c_str(), std::ios::in );
 
     std::string content(std::istreambuf_iterator<char>(ifs), (std::istreambuf_iterator<char>()));
 
@@ -265,8 +265,10 @@ namespace TestAppTest2
         // ===============================================================================        
         TEST_METHOD(ProcessingFiles1)
         {
-            std::string workFileContent = readWholeFile("File1.c");
-            std::string expectedFileContent = readWholeFile("FileRes1.c");
+            std::string workFileContent = readWholeFile("File01.c");
+            std::string expectedFileContent = readWholeFile("FileRes01.c");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
 
             char *szFileContent = const_cast<char*>(workFileContent.c_str());
             removeComments(szFileContent);
@@ -276,8 +278,10 @@ namespace TestAppTest2
 
         TEST_METHOD(ProcessingFiles2)
         {
-            std::string workFileContent = readWholeFile("File2.c");
-            std::string expectedFileContent = readWholeFile("FileRes2.c");
+            std::string workFileContent = readWholeFile("File02.c");
+            std::string expectedFileContent = readWholeFile("FileRes02.c");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
 
             char *szFileContent = const_cast<char*>(workFileContent.c_str());
             removeComments(szFileContent);
@@ -287,8 +291,21 @@ namespace TestAppTest2
 
         TEST_METHOD(ProcessingFiles3)
         {
-            std::string workFileContent = readWholeFile("File3.c");
-            std::string expectedFileContent = readWholeFile("FileRes3.c");
+            std::string workFileContent = readWholeFile("File03.c");
+            std::string expectedFileContent = readWholeFile("FileRes03.c");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingFiles20)
+        {
+            std::string workFileContent = readWholeFile("File20.c");
+            std::string expectedFileContent = readWholeFile("FileRes20.c");
 
             char *szFileContent = const_cast<char*>(workFileContent.c_str());
             removeComments(szFileContent);
