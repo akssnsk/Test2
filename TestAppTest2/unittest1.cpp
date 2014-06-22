@@ -113,8 +113,8 @@ namespace TestAppTest2
 
         TEST_METHOD(BaseCase5)
         {
-            char workContent[]     = " \\\\test ";
-            char expectedContent[] = " \\\\test ";
+            char workContent[] = " \\test ";
+            char expectedContent[] = " \\test ";
 
             removeComments(workContent);
 
@@ -123,8 +123,8 @@ namespace TestAppTest2
 
         TEST_METHOD(BaseCase6)
         {
-            char workContent[] = " \\test ";
-            char expectedContent[] = " \\test ";
+            char workContent[] = " \\\\test ";
+            char expectedContent[] = " \\\\test ";
 
             removeComments(workContent);
 
@@ -302,8 +302,8 @@ namespace TestAppTest2
 
         TEST_METHOD(StringCase2)
         {
-            char workContent[]     = "printf(\"this /* is a string with */ comment\")";
-            char expectedContent[] = "printf(\"this /* is a string with */ comment\")";
+            char workContent[]     = "printf(\"this /* is a string with */ C comment\")";
+            char expectedContent[] = "printf(\"this /* is a string with */ C comment\")";
 
             removeComments(workContent);
 
@@ -312,8 +312,8 @@ namespace TestAppTest2
 
         TEST_METHOD(StringCase3)
         {
-            char workContent[]     = "printf(\"this is a string with // comment\")";
-            char expectedContent[] = "printf(\"this is a string with // comment\")";
+            char workContent[]     = "printf(\"this is a string with // C++ comment\")";
+            char expectedContent[] = "printf(\"this is a string with // C++ comment\")";
 
             removeComments(workContent);
 
@@ -322,8 +322,8 @@ namespace TestAppTest2
 
         TEST_METHOD(StringCase4)
         {
-            char workContent[]     = "printf(\"this is /* a string */ with // comment\")";
-            char expectedContent[] = "printf(\"this is /* a string */ with // comment\")";
+            char workContent[]     = "printf(\"this is /* a string */ with // both comment\")";
+            char expectedContent[] = "printf(\"this is /* a string */ with // both comment\")";
 
             removeComments(workContent);
 
@@ -352,8 +352,8 @@ namespace TestAppTest2
 
         TEST_METHOD(TrickyStringCase3)
         {
-            char workContent[]     = "printf(\"this is \\\\/* \\\"a string /*\\\" \\\\ with escaped */ chars\");";
-            char expectedContent[] = "printf(\"this is \\\\/* \\\"a string /*\\\" \\\\ with escaped */ chars\");";
+            char workContent[]     = "printf(\"this is \\\\/* \\\"another tricky string /*\\\" \\\\ with escaped */ chars\");";
+            char expectedContent[] = "printf(\"this is \\\\/* \\\"another tricky string /*\\\" \\\\ with escaped */ chars\");";
 
             removeComments(workContent);
 
