@@ -52,6 +52,24 @@ namespace TestAppTest2
             Assert::AreEqual(expected, c);
         }
 
+        TEST_METHOD(Trivial3)
+        {
+            char expected[] = "a";
+            char c[] = "a";
+            removeComments(c);
+
+            Assert::AreEqual(expected, c);
+        }
+
+        TEST_METHOD(Trivial4)
+        {
+            char expected[] = "no comment";
+            char working[] = "no comment";
+            removeComments(working);
+
+            Assert::AreEqual(expected, working);
+        }
+
         // ===============================================================================        
         TEST_METHOD(BaseCase1)
         {
