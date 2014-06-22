@@ -345,7 +345,6 @@ namespace TestAppTest2
             Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
         }
 
-#if 0
         TEST_METHOD(ProcessingUglyFiles1)
         {
             std::string workFileContent = readWholeFile("Ugly01.cpp");
@@ -358,7 +357,6 @@ namespace TestAppTest2
 
             Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
         }
-#endif
 
     };
 }
