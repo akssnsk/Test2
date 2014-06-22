@@ -1,5 +1,5 @@
 Test task
-=====
+=========
 
 Write a function to remove C and C++ comments from an input string while 
 leaving all other data intact. 
@@ -29,3 +29,8 @@ void removeComments(char *str)
 
 }
 
+
+Solution and usage
+--------
+Solution is implemented for Visual Studio 2013 and located in files Task.h and Task.c. 
+Unit tests are located in unittest1. To open and run the solution and all unit test, open TestApp.sln in Visual Studio 2013.
