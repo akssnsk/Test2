@@ -44,7 +44,7 @@ the Test Explorer Window and press Run All link.
 Implementation notice
 --------
 The solution implemented in plain C, which is required by the task, as a state 
-machine with additional processing of the step for special cases. There was no
+machine with additional processing of the step for special cases. There were no
 clarifications about whether a real C standard should be used and which version 
 of the standard should be taken into account. Thus, comments are just erased,
 leaving all the spaces and line carriages outside the comment intact. Some of 
