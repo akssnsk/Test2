@@ -21,7 +21,7 @@ typedef struct Branch {
 
 char CtrlSymbol(char c)
 {
-    char ctrlVal = 3;
+    char ctrlVal = 4;
     switch (c)
     {
         case '/':
@@ -35,36 +35,45 @@ char CtrlSymbol(char c)
         case '\n':
             ctrlVal = 2;
             break;
+
+        case '\"':
+            ctrlVal = 3;
+            break;
     }
 
     return ctrlVal;
 }
 
-Branch transTable[5][4] = 
+
+Branch transTable[6][5] = 
 {
-    /*                                 '/'                          '*'                         '\n'                 all others    */
-    /* State_Code           */  { { State_CommentLeadin, 0 }, { State_Code, 1 },           { State_Code, 1 },     { State_Code, 1 }       },    /* State_Code           */ 
-    /* State_CommentLeadin  */  { { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_Code, 1 }       },    /* State_CommentLeadin  */ 
-    /* State_CommentLeadout */  { { State_Code, 0 },          { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 }   },     /* State_CommentLeadout */
-    /* State_CComment       */  { { State_CComment, 0 },      { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 }   },    /* State_CComment       */ 
-    /* State_CppComment     */  { { State_CppComment, 0 },    { State_CppComment, 0 },     { State_Code, 1 },     { State_CppComment, 0 } },    /* State_CppComment     */
+    /*                                 0:'/'                          1:'*'                      2:'\n'                 3:'"'                 3:all others    */
+    /* State_Code           */  { { State_CommentLeadin, 0 }, { State_Code, 1 },           { State_Code, 1 },     { State_String, 1 },     { State_Code, 1 }       },    /* State_Code           */ 
+    /* State_CommentLeadin  */  { { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_String, 1 },     { State_Code, 1 }       },    /* State_CommentLeadin  */ 
+    /* State_CommentLeadout */  { { State_Code, 0 },          { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 },   { State_CComment, 0 }   },    /* State_CommentLeadout */
+    /* State_CComment       */  { { State_CComment, 0 },      { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 },   { State_CComment, 0 }   },    /* State_CComment       */ 
+    /* State_CppComment     */  { { State_CppComment, 0 },    { State_CppComment, 0 },     { State_Code, 1 },     { State_CppComment, 1 }, { State_CppComment, 0 } },    /* State_CppComment     */
+    /* State_String         */  { { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 },       { State_String, 1 }     },    /* State_CppComment     */
 };
 
 void step2(char *str, long long *iR, long long *iW, State *s)
 {
-    int ctrl = CtrlSymbol(str[*iR]);
-    Branch b = transTable[*s][ctrl];
+    // Get control index for symbol 
+    int ctrlIdx = CtrlSymbol(str[*iR]);
 
     if (*s == State_CommentLeadin)
     {
-        if (ctrl != 0 && ctrl != 1)
+        if (ctrlIdx != 0 && ctrlIdx != 1)
         {
             str[*iW] = '/';
             (*iW)++;
         }
     }
 
-    // shift state
+    // Get decision branch
+    Branch b = transTable[*s][ctrlIdx];
+
+    // Shift state
     *s = b.nextState;
 
     // output if required
@@ -99,6 +108,11 @@ void removeComments(char *str)
     }
 
     str[iW] = 0;
+
+    //char *str = " asfasdfasf
+    //    asdfasdf
+    //    ;
+
 
     return;
 }

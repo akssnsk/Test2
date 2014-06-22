@@ -222,12 +222,73 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
+        TEST_METHOD(ComparingStrings1)
+        {
+            char workContent[]     = "printf(\"this is a simple string\")";
+            char expectedContent[] = "printf(\"this is a simple string\")";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComparingStrings2)
+        {
+            char workContent[]     = "printf(\"this /* is a string with */ comment\")";
+            char expectedContent[] = "printf(\"this /* is a string with */ comment\")";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComparingStrings3)
+        {
+            char workContent[]     = "printf(\"this is a string with // comment\")";
+            char expectedContent[] = "printf(\"this is a string with // comment\")";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComparingStrings4)
+        {
+            char workContent[]     = "printf(\"this is /* a string */ with // comment\")";
+            char expectedContent[] = "printf(\"this is /* a string */ with // comment\")";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
 
         // ===============================================================================        
-        TEST_METHOD(ComparingFiles1)
+        TEST_METHOD(ProcessingFiles1)
         {
             std::string workFileContent = readWholeFile("File1.c");
             std::string expectedFileContent = readWholeFile("FileRes1.c");
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingFiles2)
+        {
+            std::string workFileContent = readWholeFile("File2.c");
+            std::string expectedFileContent = readWholeFile("FileRes2.c");
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingFiles3)
+        {
+            std::string workFileContent = readWholeFile("File3.c");
+            std::string expectedFileContent = readWholeFile("FileRes3.c");
 
             char *szFileContent = const_cast<char*>(workFileContent.c_str());
             removeComments(szFileContent);
