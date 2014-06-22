@@ -8,41 +8,35 @@
 
 #include "Task.h"
 
+// The comments below are in fact syntatically correct
 /\
 *\
-Regular
+Ugly
 comment
 *\
 /
 
 /\
-/ This is not a C++ / C99 comment!
-
+/ Ugly comment cpp stype
 
 /\
 \
 \
-/ But this is a C++ / C99 comment!
-
+/ One more ugly comment in cpp
 
 /\
-* This is not a C or C++ comment!
+* Yet another ugly c comment
 
 /\
 * This is a regular C comment *\
-but this is just a routine continuation *\
-and that was not the end either - but this is *\
+and it's longer that expected (IntelliSenge went crazy here, me too) *\
+even longer - but finite *\
 \
 /
 
 
-//int ch = "\*";
-
 int _tmain(int argc, _TCHAR* argv[])
 {
-
-
-
     printf("this is \\/* \"a string\" */\\ with escaped chars");
     printf("\n");
 

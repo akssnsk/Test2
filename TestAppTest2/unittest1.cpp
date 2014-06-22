@@ -93,6 +93,26 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
+        TEST_METHOD(BaseCase5)
+        {
+            char workContent[]     = " \\\\test ";
+            char expectedContent[] = " \\\\test ";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(BaseCase6)
+        {
+            char workContent[] = " \\test ";
+            char expectedContent[] = " \\test ";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
         TEST_METHOD(ComplexCase1)
         {
             char workContent[] = " text1 /**/ text2 /* */ text3 /* comment */ text4";
@@ -141,6 +161,26 @@ namespace TestAppTest2
             char expectedContent[] = 
                 "int z1 = 6/3;\n"
                 "int z2 = 10 / 5;";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComplexCase6)
+        {
+            char workContent[] = "/* '\\n'  4:'\"'  5:'\\'  */ ";
+            char expectedContent[] = " ";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComplexCase7)
+        {
+            char workContent[] = "/* \"string in comment\"  */ ";
+            char expectedContent[] = " ";
 
             removeComments(workContent);
 
@@ -216,6 +256,16 @@ namespace TestAppTest2
             char expectedContent[] =
                 "\n"
                 "int zz = 5;";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(CharCase1)
+        {
+            char workContent[]     = "char c = '\\0'; char c2 = '\\n'";
+            char expectedContent[] = "char c = '\\0'; char c2 = '\\n'";
 
             removeComments(workContent);
 
@@ -345,10 +395,75 @@ namespace TestAppTest2
             Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
         }
 
+        TEST_METHOD(ProcessingFiles21)
+        {
+            std::string workFileContent = readWholeFile("File21.c");
+            std::string expectedFileContent = readWholeFile("FileRes21.c");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
         TEST_METHOD(ProcessingUglyFiles1)
         {
             std::string workFileContent = readWholeFile("Ugly01.cpp");
             std::string expectedFileContent = readWholeFile("UglyRes01.cpp");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingUglyFiles2)
+        {
+            std::string workFileContent = readWholeFile("Ugly02.cpp");
+            std::string expectedFileContent = readWholeFile("UglyRes02.cpp");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingUglyFiles3)
+        {
+            std::string workFileContent = readWholeFile("Ugly03.cpp");
+            std::string expectedFileContent = readWholeFile("UglyRes03.cpp");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingUglyFiles4)
+        {
+            std::string workFileContent = readWholeFile("Ugly04.cpp");
+            std::string expectedFileContent = readWholeFile("UglyRes04.cpp");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+
+        TEST_METHOD(ProcessingRealFile1)
+        {
+            std::string workFileContent = readWholeFile("RealFile01.c");
+            std::string expectedFileContent = readWholeFile("RealFileRes01.c");
 
             Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
 
