@@ -1,0 +1,7 @@
+/\
+*\
+Ugly
+comment
+*\
+/
+normal text
