@@ -53,7 +53,7 @@ namespace TestAppTest2
         }
 
         // ===============================================================================        
-        TEST_METHOD(ComparingBase1)
+        TEST_METHOD(BaseCase1)
         {
             char workContent[] = "// this is the comment";
             char expectedContent[] = "";
@@ -63,7 +63,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingBase2)
+        TEST_METHOD(BaseCase2)
         {
             char workContent[] = "/* another comment */";
             char expectedContent[] = "";
@@ -73,7 +73,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingBase3)
+        TEST_METHOD(BaseCase3)
         {
             char workContent[] = "text // comment";
             char expectedContent[] = "text ";
@@ -83,7 +83,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingBase4)
+        TEST_METHOD(BaseCase4)
         {
             char workContent[]     = "text1 /* comment */ text2";
             char expectedContent[] = "text1  text2";
@@ -93,7 +93,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingComplex1)
+        TEST_METHOD(ComplexCase1)
         {
             char workContent[] = " text1 /**/ text2 /* */ text3 /* comment */ text4";
             char expectedContent[] = " text1  text2  text3  text4";
@@ -103,7 +103,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingComplex2)
+        TEST_METHOD(ComplexCase2)
         {
             char workContent[] = "/***  text    ***/";
             char expectedContent[] = "";
@@ -113,7 +113,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingComplex3)
+        TEST_METHOD(ComplexCase3)
         {
             char workContent[] = "/**  text  **/";
             char expectedContent[] = "";
@@ -123,7 +123,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingComplex4)
+        TEST_METHOD(ComplexCase4)
         {
             char workContent[] = "/**  text  **/ text";
             char expectedContent[] = " text";
@@ -133,7 +133,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingComplex5)
+        TEST_METHOD(ComplexCase5)
         {
             char workContent[] =
                 "int z1 = 6/3;\n"
@@ -147,7 +147,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingMultiline1)
+        TEST_METHOD(MultilineCase1)
         {
             char workContent[] = "  /*\n"
                 "* /\n"
@@ -167,7 +167,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingMultiline2)
+        TEST_METHOD(MultilineCase2)
         {
             char workContent[] = 
                 "  //\n"
@@ -192,7 +192,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingMultiline3)
+        TEST_METHOD(MultilineCase3)
         {
             char workContent[] =
                 "/* c comment // cpp comment\n"
@@ -207,7 +207,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingMultiline4)
+        TEST_METHOD(MultilineCase4)
         {
             char workContent[] =
                 "// cpp comment /*  /*\n"
@@ -222,7 +222,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingStrings1)
+        TEST_METHOD(StringCase1)
         {
             char workContent[]     = "printf(\"this is a simple string\")";
             char expectedContent[] = "printf(\"this is a simple string\")";
@@ -232,7 +232,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingStrings2)
+        TEST_METHOD(StringCase2)
         {
             char workContent[]     = "printf(\"this /* is a string with */ comment\")";
             char expectedContent[] = "printf(\"this /* is a string with */ comment\")";
@@ -242,7 +242,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingStrings3)
+        TEST_METHOD(StringCase3)
         {
             char workContent[]     = "printf(\"this is a string with // comment\")";
             char expectedContent[] = "printf(\"this is a string with // comment\")";
@@ -252,7 +252,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingStrings4)
+        TEST_METHOD(StringCase4)
         {
             char workContent[]     = "printf(\"this is /* a string */ with // comment\")";
             char expectedContent[] = "printf(\"this is /* a string */ with // comment\")";
@@ -262,7 +262,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingTrickyStrings1)
+        TEST_METHOD(TrickyStringCase1)
         {
             char workContent[]     = "printf(\"this is \\\\/* \\\"a string\\\" */\\\\ with escaped chars\");";
             char expectedContent[] = "printf(\"this is \\\\/* \\\"a string\\\" */\\\\ with escaped chars\");";
@@ -272,8 +272,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-#if 0
-        TEST_METHOD(ComparingTrickyStrings2)
+        TEST_METHOD(TrickyStringCase2)
         {
             char workContent[] = "printf(\"this is \\\\/* \\\"a tricky string */\\\\ with escaped chars\");";
             char expectedContent[] = "printf(\"this is \\\\/* \\\"a tricky string */\\\\ with escaped chars\");";
@@ -283,7 +282,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
-        TEST_METHOD(ComparingTrickyStrings3)
+        TEST_METHOD(TrickyStringCase3)
         {
             char workContent[]     = "printf(\"this is \\\\/* \\\"a string /*\\\" \\\\ with escaped */ chars\");";
             char expectedContent[] = "printf(\"this is \\\\/* \\\"a string /*\\\" \\\\ with escaped */ chars\");";
@@ -292,7 +291,7 @@ namespace TestAppTest2
 
             Assert::AreEqual(expectedContent, workContent);
         }
-#endif
+
         // ===============================================================================        
         TEST_METHOD(ProcessingFiles1)
         {
@@ -338,11 +337,28 @@ namespace TestAppTest2
             std::string workFileContent = readWholeFile("File20.c");
             std::string expectedFileContent = readWholeFile("FileRes20.c");
 
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
             char *szFileContent = const_cast<char*>(workFileContent.c_str());
             removeComments(szFileContent);
 
             Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
         }
+
+#if 0
+        TEST_METHOD(ProcessingUglyFiles1)
+        {
+            std::string workFileContent = readWholeFile("Ugly01.cpp");
+            std::string expectedFileContent = readWholeFile("UglyRes01.cpp");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
+#endif
 
     };
 }

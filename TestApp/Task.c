@@ -52,17 +52,17 @@ char CtrlSymbol(char c)
 }
 
 // State translation table
-Branch transTable[8][5] = 
+Branch transTable[8][6] = 
 {
-    /*                              0:code symbols             1:'/'                        2:'*'                        3:'\n'                 4:'"'              
-    /* State_Same           */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Same, 0 },     { State_Same, 0 }        },    /* State_Same           */
-    /* State_Code           */  { { State_Same, 1 },       { State_CommentLeadin, 0 }, { State_Same, 1 },           { State_Same, 1 },     { State_String, 1 }      },    /* State_Code           */ 
-    /* State_CommentLeadin  */  { { State_Code, 1 },       { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_String, 1 }      },    /* State_CommentLeadin  */ 
-    /* State_CommentLeadout */  { { State_CComment, 0 },   { State_Code, 0 },          { State_Same, 0 },           { State_CComment, 0 }, { State_CComment, 0 }    },    /* State_CommentLeadout */
-    /* State_CComment       */  { { State_Same, 0 },       { State_Same, 0 },          { State_CommentLeadout, 0 }, { State_Same, 0 },     { State_Same, 0 }        },    /* State_CComment       */ 
-    /* State_CppComment     */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Code, 1 },     { State_Same, 1 }        },    /* State_CppComment     */
-    /* State_String         */  { { State_Same, 1 },       { State_Same, 1 },          { State_Same, 1 },           { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
-    /* State_Escaped        */  { { State_String, 1 },     { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
+    /*                             0:regular symbols           1:'/'                        2:'*'                        3:'\n'                 4:'"'                 5:'\'              
+    /* State_Same           */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Same, 0 },     { State_Same, 0 },     { State_Same, 0 }       },    /* State_Same           */
+    /* State_Code           */  { { State_Same, 1 },       { State_CommentLeadin, 0 }, { State_Same, 1 },           { State_Same, 1 },     { State_String, 1 },   { State_Same /*!*/, 0 } },    /* State_Code           */ 
+    /* State_CommentLeadin  */  { { State_Code, 1 },       { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_String, 1 },   { State_Same /*!*/, 0 } },    /* State_CommentLeadin  */ 
+    /* State_CommentLeadout */  { { State_CComment, 0 },   { State_Code, 0 },          { State_Same, 0 },           { State_CComment, 0 }, { State_CComment, 0 }, { State_Same /*!*/, 0 } },    /* State_CommentLeadout */
+    /* State_CComment       */  { { State_Same, 0 },       { State_Same, 0 },          { State_CommentLeadout, 0 }, { State_Same, 0 },     { State_Same, 0 },     { State_Same /*!*/, 0 } },    /* State_CComment       */ 
+    /* State_CppComment     */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Code, 1 },     { State_Same, 1 },     { State_Same /*!*/, 0 } },    /* State_CppComment     */
+    /* State_String         */  { { State_Same, 1 },       { State_Same, 1 },          { State_Same, 1 },           { State_Code, 1 },     { State_Code, 1 },     { State_Escaped, 1 }    },    /* State_String         */
+    /* State_Escaped        */  { { State_String, 1 },     { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_String, 1 },   { State_String, 1 }     },    /* State_Escaped        */
 };
 
 void step2(char *str, long long *iR, long long *iW, State *s)
