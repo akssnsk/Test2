@@ -262,6 +262,36 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
+        TEST_METHOD(ComparingTrickyStrings1)
+        {
+            char workContent[]     = "printf(\"this is \\\\/* \\\"a string\\\" */\\\\ with escaped chars\");";
+            char expectedContent[] = "printf(\"this is \\\\/* \\\"a string\\\" */\\\\ with escaped chars\");";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComparingTrickyStrings2)
+        {
+            char workContent[] = "printf(\"this is \\\\/* \\\"a tricky string */\\\\ with escaped chars\");";
+            char expectedContent[] = "printf(\"this is \\\\/* \\\"a tricky string */\\\\ with escaped chars\");";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
+        TEST_METHOD(ComparingTrickyStrings3)
+        {
+            char workContent[]     = "printf(\"this is \\\\/* \\\"a string /*\\\" \\\\ with escaped */ chars\");";
+            char expectedContent[] = "printf(\"this is \\\\/* \\\"a string /*\\\" \\\\ with escaped */ chars\");";
+
+            removeComments(workContent);
+
+            Assert::AreEqual(expectedContent, workContent);
+        }
+
         // ===============================================================================        
         TEST_METHOD(ProcessingFiles1)
         {

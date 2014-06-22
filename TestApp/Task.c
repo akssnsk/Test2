@@ -5,55 +5,64 @@
 
 // State machine states
 typedef enum State {
-    State_Code = 0,
+    State_Same = 0,
+    State_Code,
     State_CommentLeadin,
     State_CommentLeadout,
     State_CComment,
     State_CppComment,
     State_String,
-    State_Escapedchar,
+    State_Escaped,
 } State;
 
+// Decision branch
 typedef struct Branch {
     State nextState;
     int output;
 } Branch;
 
+// Control symbols, changing state 
 char CtrlSymbol(char c)
 {
-    char ctrlVal = 4;
+    char ctrlVal = 0;
     switch (c)
     {
         case '/':
-            ctrlVal = 0;
-            break;
-
-        case '*':
             ctrlVal = 1;
             break;
 
-        case '\n':
+        case '*':
             ctrlVal = 2;
             break;
 
-        case '\"':
+        case '\n':
             ctrlVal = 3;
+            break;
+
+        case '\"':
+            ctrlVal = 4;
+            break;
+
+        case '\\':
+            ctrlVal = 5;
             break;
     }
 
     return ctrlVal;
 }
 
-
-Branch transTable[6][5] = 
+// State translation table
+Branch transTable[8][5] = 
 {
-    /*                                 0:'/'                          1:'*'                      2:'\n'                 3:'"'                 3:all others    */
-    /* State_Code           */  { { State_CommentLeadin, 0 }, { State_Code, 1 },           { State_Code, 1 },     { State_String, 1 },     { State_Code, 1 }       },    /* State_Code           */ 
-    /* State_CommentLeadin  */  { { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_String, 1 },     { State_Code, 1 }       },    /* State_CommentLeadin  */ 
-    /* State_CommentLeadout */  { { State_Code, 0 },          { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 },   { State_CComment, 0 }   },    /* State_CommentLeadout */
-    /* State_CComment       */  { { State_CComment, 0 },      { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 },   { State_CComment, 0 }   },    /* State_CComment       */ 
-    /* State_CppComment     */  { { State_CppComment, 0 },    { State_CppComment, 0 },     { State_Code, 1 },     { State_CppComment, 1 }, { State_CppComment, 0 } },    /* State_CppComment     */
-    /* State_String         */  { { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 },       { State_String, 1 }     },    /* State_CppComment     */
+    /*                              0:code symbols             1:'/'                        2:'*'                        3:'\n'                 4:'"'              
+    /* State_Same           */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Same, 0 },     { State_Same, 0 }        },    /* State_Same           */
+    /* State_Code           */  { { State_Code, 1 },       { State_CommentLeadin, 0 }, { State_Code, 1 },           { State_Code, 1 },     { State_String, 1 }      },    /* State_Code           */ 
+    /* State_CommentLeadin  */  { { State_Code, 1 },       { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_String, 1 }      },    /* State_CommentLeadin  */ 
+    /* State_CommentLeadout */  { { State_CComment, 0 },   { State_Code, 0 },          { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 }    },    /* State_CommentLeadout */
+    /* State_CComment       */  { { State_CComment, 0 },   { State_CComment, 0 },      { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 }    },    /* State_CComment       */ 
+    /* State_CppComment     */  { { State_CppComment, 0 }, { State_CppComment, 0 },    { State_CppComment, 0 },     { State_Code, 1 },     { State_CppComment, 1 }  },    /* State_CppComment     */
+    /* State_String         */  { { State_String, 1 },     { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
+    /* State_Escaped        */  { { State_String, 1 },     { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
 };
 
 void step2(char *str, long long *iR, long long *iW, State *s)
@@ -61,9 +70,10 @@ void step2(char *str, long long *iR, long long *iW, State *s)
     // Get control index for symbol 
     int ctrlIdx = CtrlSymbol(str[*iR]);
 
+    // Output slash if no comment confirmed
     if (*s == State_CommentLeadin)
     {
-        if (ctrlIdx != 0 && ctrlIdx != 1)
+        if (ctrlIdx != 1 && ctrlIdx != 2)
         {
             str[*iW] = '/';
             (*iW)++;
