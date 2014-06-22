@@ -503,5 +503,18 @@ namespace TestAppTest2
 
             Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
         }
+
+        TEST_METHOD(ProcessingExampleFile3)
+        {
+            std::string workFileContent = readWholeFile("RealFile03.c");
+            std::string expectedFileContent = readWholeFile("RealFileRes03.c");
+
+            Assert::IsTrue(!workFileContent.empty() && !expectedFileContent.empty());
+
+            char *szFileContent = const_cast<char*>(workFileContent.c_str());
+            removeComments(szFileContent);
+
+            Assert::AreEqual(expectedFileContent.c_str(), szFileContent);
+        }
     };
 }
