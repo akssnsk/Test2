@@ -56,12 +56,12 @@ Branch transTable[8][5] =
 {
     /*                              0:code symbols             1:'/'                        2:'*'                        3:'\n'                 4:'"'              
     /* State_Same           */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Same, 0 },     { State_Same, 0 }        },    /* State_Same           */
-    /* State_Code           */  { { State_Code, 1 },       { State_CommentLeadin, 0 }, { State_Code, 1 },           { State_Code, 1 },     { State_String, 1 }      },    /* State_Code           */ 
+    /* State_Code           */  { { State_Same, 1 },       { State_CommentLeadin, 0 }, { State_Same, 1 },           { State_Same, 1 },     { State_String, 1 }      },    /* State_Code           */ 
     /* State_CommentLeadin  */  { { State_Code, 1 },       { State_CppComment, 0 },    { State_CComment, 0 },       { State_Code, 1 },     { State_String, 1 }      },    /* State_CommentLeadin  */ 
-    /* State_CommentLeadout */  { { State_CComment, 0 },   { State_Code, 0 },          { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 }    },    /* State_CommentLeadout */
-    /* State_CComment       */  { { State_CComment, 0 },   { State_CComment, 0 },      { State_CommentLeadout, 0 }, { State_CComment, 0 }, { State_CComment, 0 }    },    /* State_CComment       */ 
-    /* State_CppComment     */  { { State_CppComment, 0 }, { State_CppComment, 0 },    { State_CppComment, 0 },     { State_Code, 1 },     { State_CppComment, 1 }  },    /* State_CppComment     */
-    /* State_String         */  { { State_String, 1 },     { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
+    /* State_CommentLeadout */  { { State_CComment, 0 },   { State_Code, 0 },          { State_Same, 0 },           { State_CComment, 0 }, { State_CComment, 0 }    },    /* State_CommentLeadout */
+    /* State_CComment       */  { { State_Same, 0 },       { State_Same, 0 },          { State_CommentLeadout, 0 }, { State_Same, 0 },     { State_Same, 0 }        },    /* State_CComment       */ 
+    /* State_CppComment     */  { { State_Same, 0 },       { State_Same, 0 },          { State_Same, 0 },           { State_Code, 1 },     { State_Same, 1 }        },    /* State_CppComment     */
+    /* State_String         */  { { State_Same, 1 },       { State_Same, 1 },          { State_Same, 1 },           { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
     /* State_Escaped        */  { { State_String, 1 },     { State_String, 1 },        { State_String, 1 },         { State_Code, 1 },     { State_Code, 1 }        },    /* State_CppComment     */
 };
 
@@ -84,7 +84,10 @@ void step2(char *str, long long *iR, long long *iW, State *s)
     Branch b = transTable[*s][ctrlIdx];
 
     // Shift state
-    *s = b.nextState;
+    if (b.nextState != State_Same)
+    {
+        *s = b.nextState;
+    }
 
     // output if required
     if (b.output == 1)
@@ -118,11 +121,6 @@ void removeComments(char *str)
     }
 
     str[iW] = 0;
-
-    //char *str = " asfasdfasf
-    //    asdfasdf
-    //    ;
-
 
     return;
 }

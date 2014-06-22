@@ -272,6 +272,7 @@ namespace TestAppTest2
             Assert::AreEqual(expectedContent, workContent);
         }
 
+#if 0
         TEST_METHOD(ComparingTrickyStrings2)
         {
             char workContent[] = "printf(\"this is \\\\/* \\\"a tricky string */\\\\ with escaped chars\");";
@@ -291,7 +292,7 @@ namespace TestAppTest2
 
             Assert::AreEqual(expectedContent, workContent);
         }
-
+#endif
         // ===============================================================================        
         TEST_METHOD(ProcessingFiles1)
         {
